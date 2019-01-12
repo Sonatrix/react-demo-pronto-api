@@ -21,7 +21,7 @@ export const register = async ({ userName, password, gender }) => {
 
     if (response.status !== 200 ) {
       return ({
-        errorMessage: "Error while getting request"
+        errorMessage: response.errorMessage || "error in generating request or already exists"
       })
     }
 
@@ -53,7 +53,7 @@ export const login = async ({ userName, password }) => {
 
     if (response.status !== 200 ) {
       return ({
-        errorMessage: "Error while getting request"
+        errorMessage: response.errorMessage || "Error in request"
       })
     }
     
@@ -97,6 +97,7 @@ export const logout = () => {
 
 export const  authHeader = () => {
     // return authorization header with jwt token
+
     const user = JSON.parse(localStorage.getItem('user')) || {};
 
     if (user && user.token) {

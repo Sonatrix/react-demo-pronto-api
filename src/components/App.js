@@ -49,8 +49,8 @@ class App extends React.Component {
     const { loggedIn } = this.state;
 
     return (
-      <div>
-        <div>
+      <div className="container-fluid">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <NavLink exact to="/" activeStyle={activeStyle}>Home</NavLink>
           {" | "} 
           {!loggedIn && 
@@ -60,14 +60,14 @@ class App extends React.Component {
           {' | '}
           <NavLink to="/about" activeStyle={activeStyle}>About</NavLink>
           {' | '}
-            {loggedIn ?  <a href="#" className="btn btn-info btn-lg" onClick={this.handleLogout.bind(this)}>
+            {loggedIn ?  <a href="#" className="btn btn-info" onClick={this.handleLogout.bind(this)}>
               <span className="glyphicon glyphicon-log-out"></span> Log out
             </a> : (<NavLink to="/login" activeStyle={activeStyle}>Login</NavLink>)
           }
-        </div>
+        </nav>
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <PrivateRoute exact path="/users" component={Users} />
+          <PrivateRoute exact path="/users" component={Users} location="/users"/>
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/about" component={AboutPage} />

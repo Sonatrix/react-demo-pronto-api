@@ -15,7 +15,7 @@ class Users extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentWillMount = async () => {
+  componentDidMount = async () => {
 
     const response = await listUsers({});
 
@@ -28,9 +28,9 @@ class Users extends React.Component {
     }
   }
 
-  fetchData = async () => {
+  fetchData = async (currentPage) => {
     this.setState({ loading: true });
-    const { currentPage } = this.state;
+
     const response = await listUsers({ page: currentPage });
 
     if (response.status) {
@@ -46,21 +46,26 @@ class Users extends React.Component {
       currentPage: Number(event.target.id)
     });
 
-    this.fetchData();
+    this.fetchData(Number(event.target.id));
   }
 
   render() {
-    const { content, currentPage, totalPages, loading } = this.state;
+    const { content, totalPages, loading , totalElements} = this.state;
 
     if (loading) {
       return null;
     }
 
     if (!content) {
-      return <div>No Data Available or Encountered some error</div>
+      return <div className="jumbotron">No Data Available or Encountered some error</div>
     }
-    const renderUsers = content && content.map(({ userName, gender }, index) => {
-      return <li key={index}>{userName}: {gender}</li>;
+    const renderUsers = content && content.map(({ id, userName, gender, password }, index) => {
+      return (<tr key={id}>
+            <th scope="row">{id}</th>
+            <td>{userName}</td>
+            <td>{password}</td>
+            <td>{gender}</td>
+          </tr>);
     });
 
     const pageNumbers = [];
@@ -70,7 +75,7 @@ class Users extends React.Component {
 
     const renderPageNumbers = pageNumbers.map(number => {
       return (
-        <li
+        <li className="page-item"
               key={number}
               id={number}
               onClick={this.handleClick}
@@ -81,14 +86,28 @@ class Users extends React.Component {
     });
 
     return (
-      <div>
-            <ul>
-              {renderUsers}
-            </ul>
-            <ul id="page-numbers">
-              {renderPageNumbers}
-            </ul>
-          </div>
+      <div className="jumbotron">
+      <div className="row">
+      <p>Total Users: {totalElements}</p>
+      </div>
+        <table className="table bg-white">
+          <thead>
+            <tr>
+              <th scope="col">id</th>
+              <th scope="col">userName</th>
+              <th scope="col">password</th>
+              <th scope="col">gender</th>
+            </tr>
+          </thead>
+          <tbody>
+            {renderUsers}
+          </tbody>
+        </table>
+
+        <ul id="page-numbers" className="pagination">
+          {renderPageNumbers}
+        </ul>
+    </div>
     );
   }
 }
