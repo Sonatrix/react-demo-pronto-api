@@ -76,12 +76,12 @@ class Users extends React.Component {
     const renderPageNumbers = pageNumbers.map(number => {
       return (
         <li className="page-item"
-              key={number}
-              id={number}
-              onClick={this.handleClick}
-            >
-              {number}
-            </li>
+          key={number}
+          id={number}
+          onClick={this.handleClick}
+        >
+        {number}
+      </li>
       );
     });
 
